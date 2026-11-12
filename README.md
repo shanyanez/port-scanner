@@ -4,9 +4,7 @@ A tiny port scanner for your own machine, written in plain Python with no extra 
 
 ## What it does
 
-Every program on your computer that talks over the network listens on a numbered "port".
-This script checks a range of ports on **your own computer** and lists the ones that have
-something listening.
+A lightweight port scanner for localhost. It attempts a TCP connection on each port in a given range and lists the ones that accept it, so you can see which services are running on your machine.
 
 It only scans `127.0.0.1` (your own machine) on purpose.
 
