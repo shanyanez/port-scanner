@@ -13,6 +13,7 @@ Run it:
 
 import socket
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 # We only ever scan this computer. Scanning machines you don't own
@@ -64,14 +65,19 @@ def main():
     first, last = read_range(sys.argv[1:])
     print(f"Checking ports {first} to {last} on this computer...")
 
+    # perf_counter is the clock meant for measuring how long something took.
+    # Unlike the wall clock, it never jumps if the system time gets adjusted.
+    started = time.perf_counter()
     open_ports = scan(first, last)
+    seconds = time.perf_counter() - started
 
-    if not open_ports:
+    if open_ports:
+        for port in open_ports:
+            print(f"  {port:>5}  open  ({guess_service(port)})")
+        print(f"{len(open_ports)} open port(s) found.")
+    else:
         print("Nothing is listening in that range.")
-        return
-    for port in open_ports:
-        print(f"  {port:>5}  open  ({guess_service(port)})")
-    print(f"{len(open_ports)} open port(s) found.")
+    print(f"Scan took {seconds:.2f} seconds.")
 
 
 if __name__ == "__main__":

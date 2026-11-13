@@ -21,6 +21,7 @@ Example output:
 Checking ports 8000 to 9000 on this computer...
    8080  open  (http-alt)
 1 open port(s) found.
+Scan took 0.35 seconds.
 ```
 
 ## How it works
@@ -29,9 +30,9 @@ Checking ports 8000 to 9000 on this computer...
 2. If the connection works, a program is listening there, so the port is "open".
 3. It checks many ports at the same time, so a thousand ports take about a second.
 4. For each open port, it looks up the service that normally uses that number.
+5. It times the scan and prints the duration on the last line.
 
 ## Ideas for later
 
 - Save the results to a file
-- Show how long the scan took
 - Compare today's scan with yesterday's and point out what changed
