@@ -23,6 +23,10 @@ HOST = "127.0.0.1"
 # How long to wait at each door before deciding nobody is home.
 TIMEOUT_SECONDS = 0.3
 
+# Every scan is written here, replacing the one before, so there is
+# always a copy of the latest result to look back at.
+RESULTS_FILE = "last_scan.txt"
+
 
 def is_open(port):
     """Knock on one port. True means a program answered."""
@@ -61,6 +65,16 @@ def read_range(args):
     sys.exit("Usage: python scanner.py [first_port last_port]   (ports are 1 to 65535)")
 
 
+def save_results(first, last, open_ports):
+    """Write the open ports to RESULTS_FILE, one per line."""
+    with open(RESULTS_FILE, "w") as file:
+        # The first line records when and what we scanned. It starts with
+        # "#" so anything reading the file later can tell it isn't a port.
+        file.write(f"# {time.strftime('%Y-%m-%d %H:%M:%S')}  ports {first} to {last}\n")
+        for port in open_ports:
+            file.write(f"{port} {guess_service(port)}\n")
+
+
 def main():
     first, last = read_range(sys.argv[1:])
     print(f"Checking ports {first} to {last} on this computer...")
@@ -78,6 +92,9 @@ def main():
     else:
         print("Nothing is listening in that range.")
     print(f"Scan took {seconds:.2f} seconds.")
+
+    save_results(first, last, open_ports)
+    print(f"Results saved to {RESULTS_FILE}.")
 
 
 if __name__ == "__main__":

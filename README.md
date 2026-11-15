@@ -22,6 +22,14 @@ Checking ports 8000 to 9000 on this computer...
    8080  open  (http-alt)
 1 open port(s) found.
 Scan took 0.35 seconds.
+Results saved to last_scan.txt.
+```
+
+Each scan also writes its results to `last_scan.txt` in the current folder, replacing the previous one:
+
+```
+# 2026-11-15 21:30:02  ports 8000 to 9000
+8080 http-alt
 ```
 
 ## How it works
@@ -30,9 +38,9 @@ Scan took 0.35 seconds.
 2. If the connection works, a program is listening there, so the port is "open".
 3. It checks many ports at the same time, so a thousand ports take about a second.
 4. For each open port, it looks up the service that normally uses that number.
-5. It times the scan and prints the duration on the last line.
+5. It times the scan and prints the duration.
+6. It saves the open ports to `last_scan.txt`, with the date and the range scanned on the first line.
 
 ## Ideas for later
 
-- Save the results to a file
 - Compare today's scan with yesterday's and point out what changed
